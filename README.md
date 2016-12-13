@@ -28,4 +28,7 @@ A l'aide de readelf, on constate que l'ordre des sections par adresse croissante
 .text, .rodata, .data, .bss
 
 Pour savoir dans quel sens va la pile, on a décidé avec Robin Shin d'écrire un petit code C qui va créer des variables locales et qui retourne leur adresses. On constate que la variable crée en dernier à une adresse inférieure à l'adresse de la variable crée en premier. La pile croit vers le haut (si on considère que les adresses sont rangées dans l'ordre croissant du haut vers le bas).
-  
+
+On constate de plus que les adresses de la pile et du tas sont supérieures à l'adresse du .bss donc on a l'ordre suivant :
+
+.test, .rodata, .data, .bss, .heap, .stack
