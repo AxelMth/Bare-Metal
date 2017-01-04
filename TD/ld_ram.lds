@@ -1,3 +1,5 @@
+ENTRY(ORIGIN(ramh))
+
 MEMORY 
 	{
 		rom (rx) : ORIGIN = 0, LENGTH = 256k
@@ -10,7 +12,7 @@ _stack_start = ORIGIN(raml)+LENGTH(raml);
 _stack_end = _stack_start - stack_size;
    
 SECTIONS {
-	 .text : {
+	 .text : AT (ORIGIN(ramh)) { 
 		 *(.text)
 		 _etext = . ;
 	 } > ramh
@@ -19,7 +21,7 @@ SECTIONS {
 		  *(.data)
 		  _edata = . ;
 	 } > ramh
-	 .bss : {
+	 .bss : AT (ADDR(.data)+SIZEOF(.data)) {
 		   _bstart = . ;
 		   *(.bss) *(COMMON)
 		   _bend = . ;
