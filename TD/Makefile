@@ -13,11 +13,13 @@ GDB_FILE = .gdbinit
 DEVICE = "MKL46Z256xxx4"
 HOST_O = -LocalhostOnly
 
-all:
-	$(CC) $(CFLAGS) $(SOURCES) -o $(OBJETS)
-	$(CC) $(LFLAGS) $(LSCRIPT) $(OBJETS) -o $(EXE) 
+all: $(OBJETS)
+	$(CC) $(LFLAGS) $(LSCRIPT) $(OBJETS) -o $(EXE)
 
-gdb:
+$(OBJETS) : $(SOURCES)
+	$(CC) $(CFLAGS) $(SOURCES) -o $(OBJETS)
+
+startgdbserver:
 	$(DRIVER) $(DRIVER_FLAGS) $(DEVICE) $(HOST_O) 
 
 clean:
