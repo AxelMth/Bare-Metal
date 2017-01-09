@@ -1,7 +1,7 @@
-target ext :2231
+target ext :2331
 mon endian little
 mon halt
-
+load
 # User interface with asm, regs and cmd windows
 define split
   layout split
@@ -9,3 +9,4 @@ define split
   layout regs
   focus cmd
 end
+
