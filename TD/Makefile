@@ -4,7 +4,7 @@ AS = $(PREFIX)-as
 
 ASFLAGS = -g -mcpu=cortex-m0plus
 CFLAGS = -g -O1 -mcpu=cortex-m0plus -mthumb -Werror -Wall -Wextra
-OBJETS = main.o crt0.o init.o
+OBJETS = main.o crt0.o init.o led.o
 EXE = main
 
 LFLAGS = -nostdlib -T
@@ -24,6 +24,11 @@ $(EXE): $(OBJETS)
 
 startgdbserver:
 	$(DRIVER) $(DRIVER_FLAGS) $(DEVICE) $(HOST_O) 
+
+-include $(subst .c,.d,$(SOURCES))
+
+%.d : %.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -MM -MF $@ -MP $<
 
 clean:
 	rm -f $(EXE) $(OBJETS)
