@@ -1,4 +1,7 @@
-int main(){
-	while(1);
-}
+int bss = 0;
+int bss2;
+char test;
 
+int main(){
+	return bss2;
+}

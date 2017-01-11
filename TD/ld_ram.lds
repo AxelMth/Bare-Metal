@@ -1,4 +1,4 @@
-ENTRY(main)
+ENTRY(_start)
 
 MEMORY 
 	{
@@ -8,8 +8,8 @@ MEMORY
 	}
 
 stack_size = 8;
-_stack_start = ORIGIN(raml)+LENGTH(raml);
-_stack_end = _stack_start - stack_size;
+_stack = ORIGIN(raml)+LENGTH(raml);
+_stack_end = _stack - stack_size;
    
 SECTIONS {
 	 .text : { 
