@@ -32,6 +32,3 @@ startgdbserver:
 
 clean:
 	rm -f $(EXE) $(OBJETS)
-	
-	
-
