@@ -5,12 +5,13 @@ AS = $(PREFIX)-as
 ASFLAGS = -g -mcpu=cortex-m0plus
 CFLAGS = -g -O1 -mcpu=cortex-m0plus -mthumb -Werror -Wall -Wextra
 OBJETS = main.o crt0.o init.o led.o
+CLOCKS = clocks.o
+SOURCES = main.c led.c
 EXE = main
-
 LFLAGS = -nostdlib -T
 LSCRIPT = ld_ram.lds
-
 GDB = arm-none-eabi-gdb
+
 DRIVER = JLinkGDBServer 
 DRIVER_FLAGS = -if swd -device 
 GDB_FILE = .gdbinit
@@ -20,7 +21,7 @@ HOST_O = -LocalhostOnly
 all: $(EXE)
 
 $(EXE): $(OBJETS)
-	$(CC) $(LFLAGS) $(LSCRIPT) $(OBJETS) -o $(EXE)
+	$(CC) $(LFLAGS) $(LSCRIPT) $(OBJETS) $(CLOCKS) -o $(EXE)
 
 startgdbserver:
 	$(DRIVER) $(DRIVER_FLAGS) $(DEVICE) $(HOST_O) 
@@ -31,4 +32,4 @@ startgdbserver:
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -MM -MF $@ -MP $<
 
 clean:
-	rm -f $(EXE) $(OBJETS)
+	rm -f $(EXE) $(OBJETS) *.d

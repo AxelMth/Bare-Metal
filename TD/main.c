@@ -1,4 +1,5 @@
 #include "led.h"
+#include "clocks.h"
 
 // Attente active
 void wait(){
@@ -8,6 +9,10 @@ void wait(){
 
 int main() {
 
+	// Initialisation des horloges
+	clocks_init();
+
+	// Initialisation des LEDs
 	led_init();
 
 	while (1) {
