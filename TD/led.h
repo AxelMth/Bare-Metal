@@ -16,18 +16,18 @@
 #define GPIOD_PCOR (*(volatile uint32_t *)0x400FF0C8)
 #define GPIOE_PCOR (*(volatile uint32_t *)0x400FF108)
 
-// Définitio des registres d'exctinction des LEDs
+// Définition des registres d'exctinction des LEDs
 #define GPIOD_PSOR (*(volatile uint32_t *)0x400FF0C4)
 #define GPIOE_PSOR (*(volatile uint32_t *)0x400FF104)
 
-// Défition des registres de toggle des LEDs
+// Définition des registres de toggle des LEDs
 #define GPIOD_PTOR (*(volatile uint32_t *)0x400FF0CC)
 #define GPIOE_PTOR (*(volatile uint32_t *)0x400FF10C)
 
 // Processus d'initialisation des LEDs
 void led_init(void);
 
-// Processus de gestion da LED verte
+// Processus de gestion de la LED verte
 void led_g_on(void);
 void led_g_off(void);
 void led_g_toggle(void);

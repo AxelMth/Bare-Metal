@@ -4,7 +4,8 @@ AS = $(PREFIX)-as
 
 ASFLAGS = -g -mcpu=cortex-m0plus
 CFLAGS = -g -O1 -mcpu=cortex-m0plus -mthumb -Werror -Wall -Wextra
-OBJETS = main.o crt0.o init.o led.o
+SOURCES = uart.c init.c main.c led.c
+OBJETS = main.o crt0.o init.o led.o uart.o
 CLOCKS = clocks.o
 SOURCES = main.c led.c
 EXE = main

@@ -1,8 +1,5 @@
-#include <stdint.h>
+#include "registerManager.h"
 #include "led.h"
-
-#define SETONEBIT(reg,shift) (reg |= (1<<shift))
-#define CLEARONEBIT(reg,shift) (reg &= ~(1<<shift))
 
 void led_init() {
 
@@ -14,15 +11,15 @@ void led_init() {
 	CLEARONEBIT(PORTD_PCR5,8);
 	SETONEBIT(PORTD_PCR5,9);
 	SETONEBIT(PORTD_PCR5,10);
-	
+
 	// Configuration de la broche PTE29 en GPIO
 	CLEARONEBIT(PORTE_PCR29,8);
 	SETONEBIT(PORTE_PCR29,9);
 	SETONEBIT(PORTE_PCR29,10);
-	
+
 	// Configuration des LEDs en sortie
-	GPIOD_PDDR = 0x00000010;
-	GPIOE_PDDR = 0x10000000;
+	SETONEBIT(GPIOD_PDDR,5);
+	SETONEBIT(GPIOE_PDDR,29);
 
 	// Allumage des deux LEDS
 	led_g_on();
@@ -44,7 +41,7 @@ void led_g_toggle() {
 }
 
 
-// LED rouge 
+// LED rouge
 void led_r_on() {
 	GPIOE_PCOR = 0xffffffff;
 }
