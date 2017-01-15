@@ -1,6 +1,6 @@
 PREFIX = arm-none-eabi
-CC = $(PREFIX)-gcc
-AS = $(PREFIX)-as
+CC := $(PREFIX)-gcc
+AS := $(PREFIX)-as
 
 ASFLAGS = -g -mcpu=cortex-m0plus
 CFLAGS = -g -O1 -mcpu=cortex-m0plus -mthumb -Werror -Wall -Wextra
