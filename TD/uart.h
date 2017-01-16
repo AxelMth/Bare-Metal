@@ -22,6 +22,10 @@
 #define PORTA_PCR1 (*(volatile uint32_t *) 0x40049004)
 #define PORTA_PCR2 (*(volatile uint32_t *) 0x40049008)
 
+// Lecture écriture
+#define UART0_D (*(volatile uint8_t *) 0x4006A007)
+#define UART0_S1 (*(volatile uint8_t *) 0x4006A008)
+
 void uart_init(void);
 void uart_putchar(char c);
 unsigned char uart_getchar();

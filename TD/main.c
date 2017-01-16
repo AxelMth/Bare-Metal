@@ -1,5 +1,6 @@
 #include "led.h"
 #include "clocks.h"
+#include "uart.h"
 
 // Attente active
 void wait(){
@@ -12,15 +13,30 @@ int main() {
 	// Initialisation des horloges
 	clocks_init();
 
+	// Initialisation uart
+	uart_init();
+
+	uart_putchar('b');
+	uart_putchar('o');
+	uart_putchar('n');
+	uart_putchar('j');
+	uart_putchar('o');
+	uart_putchar('u');
+	uart_putchar('r');
+	uart_putchar(' ');
+	uart_putchar('P');
+	uart_putchar('D');
+	uart_putchar('!');
+	unsigned char c = uart_getchar();
+	uart_putchar(c);
 	// Initialisation des LEDs
-	led_init();
+	/*led_init();
 
 	while (1) {
 		led_r_toggle();
 		led_g_toggle();
 		wait();
-	}
+	}*/
 
 	return 0;
-
 }

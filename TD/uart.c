@@ -3,6 +3,9 @@
 
 void uart_init(){
 
+	// Activation de l'horloge de UART0
+	SETONEBIT(SIM_SCGC4,10);
+
 	// Désactivation de la reception et de l'emission de l'UART0
 	CLEARONEBIT(UART0_C2,2);
 	CLEARONEBIT(UART0_C2,3);
@@ -21,6 +24,8 @@ void uart_init(){
 	SETONEBIT(UART0_C4,3);
 	SETONEBIT(UART0_C4,4);
 
+	SETONEBIT(UART0_C4,5); // 10-bits
+
 	// Définition du SBR
 	UART0_BDL = 0x07;
 
@@ -35,8 +40,6 @@ void uart_init(){
 	// 8 bits de data
 	CLEARONEBIT(UART0_C1,4);
 
-	// Activation des horloges du port A
-	SETONEBIT(SIM_SCGC5,9);
 
 	// Activation du port A en mode UART
 	CLEARONEBIT(PORTA_PCR1,8);
@@ -47,10 +50,37 @@ void uart_init(){
 	SETONEBIT(PORTA_PCR2,9);
 	CLEARONEBIT(PORTA_PCR2,10);
 
+	// Activation des horloges du port A
+	SETONEBIT(SIM_SCGC5,9);
+
 	// Activation de la reception et de l'emission de l'UART0
 	SETONEBIT(UART0_C2,2);
 	SETONEBIT(UART0_C2,3);
-
-	// Activation de l'horloge de UART0
-	SETONEBIT(SIM_SCGC4,10);
 }
+
+
+void uart_putchar(char c){
+
+	uint8_t mask = GETONEBIT(UART0_S1,7);
+	if (!(mask | 0))
+		UART0_D = c;
+
+}
+
+unsigned char uart_getchar(){
+
+	unsigned char result;
+	uint8_t mask = GETONEBIT(UART0_S1,5);
+	if (!(mask | 0))
+		result = UART0_D;
+	return result;
+
+}
+
+/*void uart_puts(const char *s){
+
+}
+
+void uart_gets(char *s, int size){
+
+}*/
