@@ -15,8 +15,8 @@ void led_init() {
 	PORTE_PCR29 |= 1<<8;
 
 	// Configuration des LEDs en sortie
-	GPIOD_PDDR |= 1<<5;
-	GPIOE_PDDR |= 1<<29;
+	SETONEBIT(GPIOD_PDDR,5);
+	SETONEBIT(GPIOE_PDDR,29);
 
 	// Allumage des deux LEDS
 	led_g_on();
