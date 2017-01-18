@@ -24,11 +24,14 @@ int main() {
 	uart_putchar('u');
 	uart_putchar('r');
 	uart_putchar(' ');
-	uart_putchar('P');
-	uart_putchar('D');
 	uart_putchar('!');
 	unsigned char c = uart_getchar();
 	uart_putchar(c);
+	uart_puts("Salut");
+	char * s = "";
+	uart_gets(s,5);
+	uart_puts(s);
+
 	// Initialisation des LEDs
 	/*led_init();
 

@@ -62,7 +62,7 @@ void uart_init(){
 void uart_putchar(char c){
 
 	uint8_t mask = GETONEBIT(UART0_S1,7);
-	if (!(mask | 0))
+	if (!(mask & 0))
 		UART0_D = c;
 
 }
@@ -71,16 +71,29 @@ unsigned char uart_getchar(){
 
 	unsigned char result;
 	uint8_t mask = GETONEBIT(UART0_S1,5);
-	if (!(mask | 0))
+	if (!(mask & 0))
 		result = UART0_D;
 	return result;
 
 }
 
-/*void uart_puts(const char *s){
+void uart_puts(const char *s){
+
+	int i=0;
+	while(*(s+i) != '\0'){
+		uart_putchar(*(s+i));
+		i++;
+	}
+	uart_putchar('\n');
 
 }
 
 void uart_gets(char *s, int size){
 
-}*/
+	int i;
+	for(i = 0; i < size; i++){
+		*(s+i) = uart_getchar();
+	}
+	*(s+i) = '\0';
+
+}
