@@ -28,77 +28,49 @@
 
 void uart_init(){
 
+	SIM_SOPT2 = 0x04000000;
+
 	// Activation de l'horloge de UART0
 	SETONEBIT(SIM_SCGC4,10);
 
 	// Désactivation de la reception et de l'emission de l'UART0
-	CLEARONEBIT(UART0_C2,2);
-	CLEARONEBIT(UART0_C2,3);
 
 	// Sélection des horloges MCGPLLCLK et MCGPLLCLK/2 pour la sortie UART0
-	CLEARONEBIT(SIM_SOPT2,27);
-	SETONEBIT(SIM_SOPT2,26);
-
-	// Séléction de MCGPLLCLK/2
-	SETONEBIT(SIM_SOPT2,16);
-
+	SIM_SOPT2 |= 1<<16;
+	UART0_C2 = 0;
 	// MaJ de l'oversampling maximale avec erreur de moins de 3%
-	SETONEBIT(UART0_C4,0);
-	CLEARONEBIT(UART0_C4,1);
-	SETONEBIT(UART0_C4,2);
-	SETONEBIT(UART0_C4,3);
-	SETONEBIT(UART0_C4,4);
-
-	SETONEBIT(UART0_C4,5); // 10-bits
+	UART0_C4 = 0x1D;
 
 	// Définition du SBR
-	UART0_BDL = 0x07;
+	UART0_BDL = 7;
 
 	// SBR + 1 bit de stop
-	for (int i = 0; i < 6; i++)
-		CLEARONEBIT(UART0_BDH,i);
+	UART0_BDH = 0;
 
 	// Mode 8N1
 
 	// Pas de parité
-	CLEARONEBIT(UART0_C1,1);
-	// 8 bits de data
-	CLEARONEBIT(UART0_C1,4);
-
+	UART0_C1 = 0x12;
 
 	// Activation du port A en mode UART
-	CLEARONEBIT(PORTA_PCR1,8);
-	SETONEBIT(PORTA_PCR1,9);
-	CLEARONEBIT(PORTA_PCR1,10);
-
-	CLEARONEBIT(PORTA_PCR2,8);
-	SETONEBIT(PORTA_PCR2,9);
-	CLEARONEBIT(PORTA_PCR2,10);
+	PORTA_PCR1 = 0x2 << 8;
+	PORTA_PCR2 = 0x2 << 8;
 
 	// Activation des horloges du port A
 	SETONEBIT(SIM_SCGC5,9);
 
 	// Activation de la reception et de l'emission de l'UART0
-	SETONEBIT(UART0_C2,2);
-	SETONEBIT(UART0_C2,3);
+	UART0_C2 = 12;
 }
 
-
 void uart_putchar(char c){
-
-	while (UART0_S1 & (1<<7))
-		UART0_D = c;
-
+	while (!(UART0_S1 & (1<<7)));
+	UART0_D = c;
 }
 
 unsigned char uart_getchar(){
-
-	unsigned char result = 'c';
-	while (UART0_S1 & (1<<5))
-		result = UART0_D;
-
-	return result;
-
+	while (!(UART0_S1 & (1<<5)));
+	return (unsigned char) UART0_D;
 }
 
 void uart_puts(const char *s){
@@ -109,14 +81,14 @@ void uart_puts(const char *s){
 		i++;
 	}
 	uart_putchar('\n');
-
 }
 
 void uart_gets(char *s, int size){
 
 	int i;
-	for(i = 0; i < size; i++)
-		*(s+i) = uart_getchar();
+	for(i = 0; i < size; i++){
+		while(!(UART0_S1 & (1<<5)));
+		*(s+i) = UART0_D;
+	}
 	*(s+i) = '\0';
-
 }

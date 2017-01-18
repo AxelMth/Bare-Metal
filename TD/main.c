@@ -1,7 +1,11 @@
+#include <stdint.h>
+
 #include "led.h"
 #include "clocks.h"
 #include "uart.h"
 
+volatile uint32_t sum;
+volatile int i;
 // Attente active
 void wait(){
 	for(int i=0; i<100000; i++)
@@ -14,7 +18,7 @@ int main() {
 	clocks_init();
 
 	// Initialisation uart
-	//uart_init();
+	uart_init();
 
 	/*uart_putchar('b');
 	uart_putchar('o');
@@ -30,15 +34,16 @@ int main() {
 	uart_puts("Salut");
 	char * s = "";
 	uart_gets(s,5);
-	uart_puts(s);
+	uart_puts(s);*/
 
-	
-	//char * test;
-	//uart_gets(test,);
-	
+	for (i = 0; i < 1000; i++){
+		sum += uart_getchar();
+	}
+	led_r_toggle();
+	while(1);
+
 	// Initialisation des LEDs
-	*/
-	led_init();//wait();
+	/*led_init();//wait();
 
 	led_r_toggle();//wait();
 	led_g_toggle();//wait();
@@ -47,7 +52,7 @@ int main() {
 	led_g_on();//wait();
 
 	led_r_off();//wait();
-	led_g_off();//wait();
+	led_g_off();//wait();*/
 
 	return 0;
 }
