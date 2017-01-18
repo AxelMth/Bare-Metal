@@ -1,6 +1,26 @@
 #include "registerManager.h"
 #include "led.h"
 
+// Définition des registres de configuration des broches en GPIO
+#define PORTD_PCR5 (*(volatile uint32_t *)0x4004C014)
+#define PORTE_PCR29 (*(volatile uint32_t *)0x4004D074)
+
+// Définition des registres de configuration des broches en sortie
+#define GPIOD_PDDR (*(volatile uint32_t *)0x400FF0D4)
+#define GPIOE_PDDR (*(volatile uint32_t *)0x400FF114)
+
+// Définition des registres d'allumage des LEDs
+#define GPIOD_PCOR (*(volatile uint32_t *)0x400FF0C8)
+#define GPIOE_PCOR (*(volatile uint32_t *)0x400FF108)
+
+// Définition des registres d'exctinction des LEDs
+#define GPIOD_PSOR (*(volatile uint32_t *)0x400FF0C4)
+#define GPIOE_PSOR (*(volatile uint32_t *)0x400FF104)
+
+// Définition des registres de toggle des LEDs
+#define GPIOD_PTOR (*(volatile uint32_t *)0x400FF0CC)
+#define GPIOE_PTOR (*(volatile uint32_t *)0x400FF10C)
+
 void led_init() {
 
 	 // Activation des horloges des ports D et E
