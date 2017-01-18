@@ -1,3 +1,7 @@
+#ifndef UART_H
+#define UART_H
+
+
 // Définition des registres des horloges
 #define SIM_SCGC5 (*(volatile uint32_t *)0x40048038)
 
@@ -31,3 +35,5 @@ void uart_putchar(char c);
 unsigned char uart_getchar();
 void uart_puts(const char *s);
 void uart_gets(char *s,int size);
+
+#endif // UART_H
