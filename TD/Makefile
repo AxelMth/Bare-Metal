@@ -13,19 +13,13 @@ LFLAGS = -nostdlib -T
 LSCRIPT = ld_ram.lds
 GDB = arm-none-eabi-gdb
 
-DRIVER = JLinkGDBServer 
-DRIVER_FLAGS = -if swd -device 
-GDB_FILE = .gdbinit
-DEVICE = "MKL46Z256xxx4"
-HOST_O = -LocalhostOnly
-
 all: $(EXE)
 
 $(EXE): $(OBJETS)
 	$(CC) $(LFLAGS) $(LSCRIPT) $(OBJETS) $(CLOCKS) -o $(EXE)
 
 startgdbserver:
-	$(DRIVER) $(DRIVER_FLAGS) $(DEVICE) $(HOST_O) 
+	 JLinkGDBServer -if swd -device "MKL46Z256xxx4" -LocalhostOnly
 
 -include $(subst .c,.d,$(SOURCES))
 

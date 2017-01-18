@@ -14,9 +14,9 @@ int main() {
 	clocks_init();
 
 	// Initialisation uart
-	uart_init();
+	//uart_init();
 
-	uart_putchar('b');
+	/*uart_putchar('b');
 	uart_putchar('o');
 	uart_putchar('n');
 	uart_putchar('j');
@@ -37,13 +37,17 @@ int main() {
 	//uart_gets(test,);
 	
 	// Initialisation des LEDs
-	/*led_init();
+	*/
+	led_init();//wait();
 
-	while (1) {
-		led_r_toggle();
-		led_g_toggle();
-		wait();
-	}*/
+	led_r_toggle();//wait();
+	led_g_toggle();//wait();
+		
+	led_r_on(); //wait();
+	led_g_on();//wait();
+
+	led_r_off();//wait();
+	led_g_off();//wait();
 
 	return 0;
 }
