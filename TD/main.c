@@ -32,6 +32,10 @@ int main() {
 	uart_gets(s,5);
 	uart_puts(s);
 
+	
+	//char * test;
+	//uart_gets(test,);
+	
 	// Initialisation des LEDs
 	/*led_init();
 
