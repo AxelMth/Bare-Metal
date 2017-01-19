@@ -3,6 +3,7 @@
 #include "led.h"
 #include "clocks.h"
 #include "uart.h"
+#include "matrix.h"
 
 volatile uint32_t sum;
 volatile int i;
@@ -21,7 +22,11 @@ int main() {
 	uart_init();
 
 	// Initialisation des LEDs
-	led_init();
+	//led_init();
+
+	matrix_init();
+
+	return 0;
 
 	// Test fonctions uart_*();
 
@@ -41,7 +46,7 @@ int main() {
 	uart_puts(s);*/
 
 	// Somme des octets aléatoires
-	for (i = 0; i < 1000; i++){
+	/*for (i = 0; i < 1000; i++){
 		sum += uart_getchar();
 	}
 
@@ -50,6 +55,6 @@ int main() {
 
 	// Boucle infinie permettant de regarder l'état des reigstres
 	while(1);
+*/
 
-	return 0;
 }

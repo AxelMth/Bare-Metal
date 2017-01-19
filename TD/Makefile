@@ -5,9 +5,9 @@ AS := $(PREFIX)-as
 ASFLAGS = -g -mcpu=cortex-m0plus
 CFLAGS = -g -O1 -mcpu=cortex-m0plus -mthumb -Werror -Wall -Wextra
 SOURCES = uart.c init.c main.c led.c
-OBJETS = main.o crt0.o init.o led.o uart.o
+OBJETS = main.o crt0.o init.o led.o uart.o matrix.o
 CLOCKS = clocks.o
-SOURCES = main.c led.c
+SOURCES = main.c led.c matrix.c
 EXE = main
 LFLAGS = -nostdlib -T
 LSCRIPT = ld_ram.lds
