@@ -24,8 +24,6 @@
 void led_init() {
 
 	 // Activation des horloges des ports D et E
-	//SETONEBIT(SIM_SCGC5,12);
-	//SETONEBIT(SIM_SCGC5,13);
 	SIM_SCGC5 |= ((1<<12) | (1<<13));
 
 	// Configuration de la broche PTD5 en GPIO

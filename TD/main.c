@@ -20,8 +20,12 @@ int main() {
 	// Initialisation uart
 	uart_init();
 
-	/*uart_putchar('b');
-	uart_putchar('o');
+	// Initialisation des LEDs
+	led_init();
+
+	// Test fonctions uart_*();
+
+	/*uart_putchar('o');
 	uart_putchar('n');
 	uart_putchar('j');
 	uart_putchar('o');
@@ -36,23 +40,16 @@ int main() {
 	uart_gets(s,5);
 	uart_puts(s);*/
 
+	// Somme des octets aléatoires
 	for (i = 0; i < 1000; i++){
 		sum += uart_getchar();
 	}
+
+	// Clignotement de la led rouge accusant la reception des 1000 octets
 	led_r_toggle();
+
+	// Boucle infinie permettant de regarder l'état des reigstres
 	while(1);
-
-	// Initialisation des LEDs
-	/*led_init();//wait();
-
-	led_r_toggle();//wait();
-	led_g_toggle();//wait();
-		
-	led_r_on(); //wait();
-	led_g_on();//wait();
-
-	led_r_off();//wait();
-	led_g_off();//wait();*/
 
 	return 0;
 }
