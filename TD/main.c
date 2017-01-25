@@ -26,7 +26,9 @@ int main() {
 	matrix_init();
 
 	// Test de pixels (1s dégradé de rouge par ligne puis 1s dégradé de vert par ligne etc...)
-	test_pixels();
+	//test_pixels();
+	while(1)
+		display_image();
 
 	return 0;
 

@@ -1,7 +1,9 @@
 #include "registerManager.h"
 #include "matrix.h"
-// Définition des registres de configuration des broches en GPIO
 
+extern char _binary_image_raw_start;
+
+// Définition des registres de configuration des broches en GPIO
 // Port A
 #define PORTA_PCR4 (*(volatile uint32_t *)0x40049010)
 #define PORTA_PCR12 (*(volatile uint32_t *)0x40049030)
@@ -63,11 +65,12 @@ typedef struct {
   uint8_t b;
 } rgb_color;
 
-// Active la ligne row
-static void activate_row(int row);
 
 // Désactive toutes les lignes
 static void desactivate_row();
+
+// Active la ligne row
+static void activate_row(int row);
 
 // Génère un pulse du signal SCK
 static void pulse_SCK();
@@ -139,7 +142,6 @@ static void pulse_SCK(){
   SCK(0);
   SCK(1);
   SCK(0);
-
 }
 
 static void pulse_LAT(){
@@ -147,7 +149,6 @@ static void pulse_LAT(){
   LAT(1);
   LAT(0);
   LAT(1);
-
 }
 
 static void activate_row(int row){
@@ -229,55 +230,84 @@ static void init_bank0(){
 
 void test_pixels(){
 
-
   rgb_color val[8];
 
   while(1){
 
-  int k;
-  for (k = 0; k <= 7; k++)
-    	desactivate_row();
+    int k;
+    for (k = 0; k <= 7; k++)
+      	desactivate_row();
 
-  // Dégradé de rouge
-  for (int i = 0; i < 8; i++) {
-    	val[i].r = 255 >> i;
-    	val[i].g = 0;
-  	  val[i].b = 0;
-  }
+    // Dégradé de rouge
+    for (int i = 0; i < 8; i++) {
+      	val[i].r = 255 >> i;
+      	val[i].g = 0;
+    	  val[i].b = 0;
+    }
 
-  // Activation des lignes successivement
-  for (int j = 0; j < 8; j++){
-    mat_set_row(j, val);
-    wait(100);
-    desactivate_row();
-  }
+    // Activation des lignes successivement
+    for (int j = 0; j < 8; j++){
+      mat_set_row(j, val);
+      wait(100);
+      desactivate_row();
+    }
 
-  // Dégradé de vert
-  for (int i = 0; i < 8; i++) {
-    val[i].r = 0;
-    val[i].g = 255 >> i;
-    val[i].b = 0;
-  }
+    // Dégradé de vert
+    for (int i = 0; i < 8; i++) {
+      val[i].r = 0;
+      val[i].g = 255 >> i;
+      val[i].b = 0;
+    }
 
-  // Activation des lignes successivement
-  for (int j = 0; j < 8; j++){
-    mat_set_row(j, val);
-    wait(100);
-    desactivate_row();
-  }
+    // Activation des lignes successivement
+    for (int j = 0; j < 8; j++){
+      mat_set_row(j, val);
+      wait(100);
+      desactivate_row();
+    }
 
-  // Dégradé de bleu
-  for (int i = 0; i < 8; i++) {
-    val[i].r = 0;
-    val[i].g = 0;
-    val[i].b = 255 >> i;
-  }
+    // Dégradé de bleu
+    for (int i = 0; i < 8; i++) {
+      val[i].r = 0;
+      val[i].g = 0;
+      val[i].b = 255 >> i;
+    }
 
-  // Activation des lignes successivement
-  for (int j = 0; j < 8; j++){
-    mat_set_row(j, val);
-    wait(100);
-    desactivate_row();
+    // Activation des lignes successivement
+    for (int j = 0; j < 8; j++){
+      mat_set_row(j, val);
+      wait(100);
+      desactivate_row();
+    }
   }
 }
+
+void display_image(){
+
+  // Adresse du premier octet de la ligne 1
+  const char * current = &_binary_image_raw_start;
+
+  // On intère sur les 8 lignes
+  for (int i = 0 ; i < 8; i++){
+
+    // On laisse la ligne précédente allumée pour avoir une meilleure intensité
+    // sans que l'oeil ne percoive le rafraichissement des lignes
+    wait(3);
+
+    // On rafraichit les lignes définies par le mat_set_row de l'itération précédente
+    desactivate_row();
+
+    // Tableau qui contiendra les couleurs pour une ligne de LEDs
+    rgb_color val[8];
+
+    // Pour chaque ligne on remplit val par les valeurs RDG de chaque LED
+    for (int j = 7; j >= 0; j--){
+      val[j].r = *current++;
+      val[j].g = *current++;
+      val[j].b = *current++;
+    }
+    // On affiche la ligne de LEDs (dans le même ordre que la photo du TP)
+    mat_set_row(8-(i+1),val);
+  }
+
 }
