@@ -2,9 +2,10 @@ ENTRY(_start)
 
 MEMORY 
 	{
-		rom (rx) : ORIGIN = 0, LENGTH = 256k
+		flash (rx) : ORIGIN = 0x00000800, LENGTH = 254k
+		flash_config (rx) : ORIGIN = 0x00000400, LENGTH = 32
 		raml (!rx) : ORIGIN = 0x1fffe000, LENGTH = 8k
-		ramh (!rx) : ORIGIN = 0x20000000, LENGTH = 24k
+		ramh (!rx) : ORIGIN = 0x20000000, LENGTH = 24k	
 	}
 
 stack_size = 8;
@@ -26,4 +27,7 @@ SECTIONS {
 		   *(.bss) *(COMMON)
 		   _bend = . ;
 	 } > ramh
+	.flash_config :	{
+		   *(.flash_config)
+	} > flash_config
 }

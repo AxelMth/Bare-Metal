@@ -5,7 +5,7 @@ AS := $(PREFIX)-as
 ASFLAGS = -g -mcpu=cortex-m0plus
 CFLAGS = -g -O1 -mcpu=cortex-m0plus -mthumb -Werror -Wall -Wextra -std=gnu99
 SOURCES = uart.c init.c main.c led.c irq.c
-OBJETS = main.o crt0.o init.o led.o uart.o matrix.o image.o irq.o
+OBJETS = main.o crt0.o init.o led.o uart.o matrix.o image.o irq.o flash.o
 CLOCKS = clocks.o 
 SOURCES = main.c led.c matrix.c
 EXE = main

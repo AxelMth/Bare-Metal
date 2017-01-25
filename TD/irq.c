@@ -1,9 +1,13 @@
 #include "irq.h"
+#include <stdint.h>
+
+#define MAKE_DEFAULT_HANDLER(truc_IRQHandler) void __attribute__((weak)) truc_IRQHandler() {disable_irq(); while(1);}
+#define NVIC_ISER (*(volatile uint32_t *) 0xE000E100)
+#define NVIC_ICER (*(volatile uint32_t *) 0xE000E180)
+#define VTOR (*(volatile uint32_t *)  0xE000ED08)
 
 extern char _stack;
 void _start(void);
-
-#define MAKE_DEFAULT_HANDLER(truc_IRQHandler) void __attribute__((weak)) truc_IRQHandler() {disable_irq(); while(1);}
 
 MAKE_DEFAULT_HANDLER(NMI_Handler);
 MAKE_DEFAULT_HANDLER(HardFault_Handler);
@@ -85,3 +89,15 @@ void *vector_table[] = {
     PinAIRQHandler, 	  /* Pin detect (port A) handler */
     PinCD_IRQHandler,	  /* Pin detect (port C/D) handler */
 };
+
+void irq_init(){
+  VTOR = (uint32_t) vector_table;
+}
+
+void irq_enable(int irq_number){
+  NVIC_ISER |= 1<<irq_number;
+}
+
+void irq_disable(int irq_number){
+  NVIC_ICER |= 1<<irq_number;
+}

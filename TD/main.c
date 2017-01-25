@@ -21,18 +21,14 @@ int main() {
 	uart_init();
 
 	// Initialisation des LEDs
-	//led_init();
+	led_init();
 
 	// Initialisation de la matrice de LEDs
 	matrix_init();
 
-	// Test de pixels (1s dégradé de rouge par ligne puis 1s dégradé de vert par ligne etc...)
-	//test_pixels();
-	//while(1)
-	//	display_image();
-
-	enable_irq();
-	disable_irq();
+	// Initialisation de la vector table
+	irq_init();
+	
 	return 0;
 
 }
