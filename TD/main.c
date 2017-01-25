@@ -4,6 +4,7 @@
 #include "clocks.h"
 #include "uart.h"
 #include "matrix.h"
+#include "irq.h"
 
 // Attente active
 void wait(){
@@ -27,9 +28,11 @@ int main() {
 
 	// Test de pixels (1s dégradé de rouge par ligne puis 1s dégradé de vert par ligne etc...)
 	//test_pixels();
-	while(1)
-		display_image();
+	//while(1)
+	//	display_image();
 
+	enable_irq();
+	disable_irq();
 	return 0;
 
 }
