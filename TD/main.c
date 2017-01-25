@@ -5,8 +5,6 @@
 #include "uart.h"
 #include "matrix.h"
 
-volatile uint32_t sum;
-volatile int i;
 // Attente active
 void wait(){
 	for(int i=0; i<100000; i++)
