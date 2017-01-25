@@ -3,7 +3,7 @@ CC := $(PREFIX)-gcc
 AS := $(PREFIX)-as
 
 ASFLAGS = -g -mcpu=cortex-m0plus
-CFLAGS = -g -O1 -mcpu=cortex-m0plus -mthumb -Werror -Wall -Wextra
+CFLAGS = -g -O1 -mcpu=cortex-m0plus -mthumb -Werror -Wall -Wextra -std=gnu99
 SOURCES = uart.c init.c main.c led.c
 OBJETS = main.o crt0.o init.o led.o uart.o matrix.o
 CLOCKS = clocks.o

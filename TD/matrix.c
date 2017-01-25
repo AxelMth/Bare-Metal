@@ -1,5 +1,5 @@
 #include "registerManager.h"
-
+#include "matrix.h"
 // Définition des registres de configuration des broches en GPIO
 
 // Port A
@@ -19,7 +19,7 @@
 // Port D
 #define PORTD_PCR2 (*(volatile uint32_t *)0x4004C008)
 #define PORTD_PCR4 (*(volatile uint32_t *)0x4004C010)
-#define PORTD_PCR5 (*(volatile uint32_t *)0x4004D014)
+#define PORTD_PCR5 (*(volatile uint32_t *)0x4004C014)
 #define PORTD_PCR6 (*(volatile uint32_t *)0x4004C018)
 #define PORTD_PCR7 (*(volatile uint32_t *)0x4004C01C)
 
@@ -56,36 +56,131 @@ static inline void ROW5(int x) {if(!x) {SETONEBIT(GPIOD_PCOR,5);} else {SETONEBI
 static inline void ROW6(int x) {if(!x) {SETONEBIT(GPIOA_PCOR,12);} else {SETONEBIT(GPIOA_PSOR,12);}};
 static inline void ROW7(int x) {if(!x) {SETONEBIT(GPIOA_PCOR,4);} else {SETONEBIT(GPIOA_PSOR,4);}};
 
+// Définition de la structure des pixels
+typedef struct {
+  uint8_t r;
+  uint8_t g;
+  uint8_t b;
+} rgb_color;
+
+// Active la ligne row
+static void activate_row(int row);
+
+// Désactive toutes les lignes
+static void desactivate_row();
+
+// Génère un pulse du signal SCK
+static void pulse_SCK();
+
+// Génère un pusle du signal LAT
+static void pulse_LAT();
+
+// Mets tous les bits du registres à décalage à 1
+static void init_bank0();
+
+// Envoie au bank spécifié l'entier sur 8 bits
+static void send_byte(uint8_t val, int bank);
+
+// Met à jour tous les bits de la ligne
+static void mat_set_row(int row, const rgb_color *val);
+
+static inline void wait(int delay){
+  for (int i = 0; i < delay*5000; i++)
+    asm volatile ("nop");
+}
+
 // Processus d'initialisation de la matrice de LEDs
 void matrix_init(){
+
 
   // Mise en marche des horloges
   SIM_SCGC5 |= 0x00001E00;
 
-  PORTB_PCR0  = 256;
-  PORTB_PCR1  = 256;
-  PORTB_PCR2  = 256;
-  PORTC_PCR8  = 256;
-  PORTC_PCR9  = 256;
-  PORTA_PCR13 = 256;
-  PORTD_PCR2  = 256;
-  PORTD_PCR4  = 256;
-  PORTD_PCR6  = 256;
-  PORTD_PCR7  = 256;
-  PORTD_PCR5  = 256;
-  PORTA_PCR12 = 256;
-  PORTA_PCR4  = 256;
+  // Mode GPIO
+  PORTB_PCR0  = 0x00000103;
+  PORTB_PCR1  = 0x00000103;
+  PORTB_PCR2  = 0x00000103;
+  PORTC_PCR8  = 0x00000103;
+  PORTC_PCR9  = 0x00000103;
+  PORTA_PCR13 = 0x00000103;
+  PORTD_PCR2  = 0x00000103;
+  PORTD_PCR4  = 0x00000103;
+  PORTD_PCR6  = 0x00000103;
+  PORTD_PCR7  = 0x00000103;
+  PORTD_PCR5  = 0x00000103;
+  PORTA_PCR12 = 0x00000103;
+  PORTA_PCR4  = 0x00000103;
 
-  GPIOA_PDDR |= ( (1<<4) | (1<<12) | (1<<13) );
-  GPIOB_PDDR |= ( (1<<0) | (1<<1) | (1<<2) );
-  GPIOC_PDDR |= ( (1<<8) | (1<<9) );
-  GPIOD_PDDR |= ((1<<2) | (1<<4) | (1<<5) | (1<<6) | (1<<7) );
+  // Mode sortie
+  GPIOA_PDDR |= (1<<4) | (1<<12) | (1<<13);
+  GPIOB_PDDR |= (1<<0) | (1<<1) | (1<<2);
+  GPIOC_PDDR |= (1<<8) | (1<<9);
+  GPIOD_PDDR |= (1<<2) | (1<<4) | (1<<5) | (1<<6) | (1<<7);
 
+  // Initialisation des signaux
   RST(0);
   SB(1);
   LAT(1);
   SCK(0);
   SDA(0);
+  desactivate_row();
+
+  // Attente de 100ms
+  wait(100);
+
+  RST(1);
+
+  init_bank0();
+
+}
+
+static void pulse_SCK(){
+
+  SCK(0);
+  SCK(1);
+  SCK(0);
+
+}
+
+static void pulse_LAT(){
+
+  LAT(1);
+  LAT(0);
+  LAT(1);
+
+}
+
+static void activate_row(int row){
+  switch(row){
+    case 0:
+      ROW0(1);
+      break;
+    case 1:
+      ROW1(1);
+      break;
+    case 2:
+      ROW2(1);
+      break;
+    case 3:
+      ROW3(1);
+      break;
+    case 4:
+      ROW4(1);
+      break;
+    case 5:
+      ROW5(1);
+      break;
+    case 6:
+      ROW6(1);
+      break;
+    case 7:
+      ROW7(1);
+      break;
+  }
+}
+
+static void desactivate_row(){
+
   ROW0(0);
   ROW1(0);
   ROW2(0);
@@ -95,8 +190,94 @@ void matrix_init(){
   ROW6(0);
   ROW7(0);
 
-  for(int j = 0 ;  j<1000000 ; j++)
-    asm volatile ("nop");
+}
 
-  RST(1);
+static void send_byte(uint8_t val, int bank){
+
+  // Longueur du registre à décalage donné en argument
+  int length = 8;
+  SB(bank);
+
+  if (!bank)
+    length = 6;
+
+  // Rentre dans SDA chaque bit de val (val[7] ... val[0])
+  for (int i = 0; i < length; i++){
+    SDA(val & (1<<(length-(i+1))));
+    pulse_SCK();
+  }
+
+}
+
+static void mat_set_row(int row, const rgb_color *val) {
+
+  for (int i= 0; i < 8; i++){
+    send_byte(val[8-(i+1)].b,1);
+    send_byte(val[8-(i+1)].g,1);
+    send_byte(val[8-(i+1)].r,1);
+  }
+
+  pulse_LAT();
+  activate_row(row);
+}
+
+static void init_bank0(){
+  for (int i = 0; i < 24; i++)
+    send_byte(0b11111111,0);
+  pulse_LAT();
+}
+
+void test_pixels(){
+
+
+  rgb_color val[8];
+
+  while(1){
+
+  int k;
+  for (k = 0; k <= 7; k++)
+    	desactivate_row();
+
+  // Dégradé de rouge
+  for (int i = 0; i < 8; i++) {
+    	val[i].r = 255 >> i;
+    	val[i].g = 0;
+  	  val[i].b = 0;
+  }
+
+  // Activation des lignes successivement
+  for (int j = 0; j < 8; j++){
+    mat_set_row(j, val);
+    wait(100);
+    desactivate_row();
+  }
+
+  // Dégradé de vert
+  for (int i = 0; i < 8; i++) {
+    val[i].r = 0;
+    val[i].g = 255 >> i;
+    val[i].b = 0;
+  }
+
+  // Activation des lignes successivement
+  for (int j = 0; j < 8; j++){
+    mat_set_row(j, val);
+    wait(100);
+    desactivate_row();
+  }
+
+  // Dégradé de bleu
+  for (int i = 0; i < 8; i++) {
+    val[i].r = 0;
+    val[i].g = 0;
+    val[i].b = 255 >> i;
+  }
+
+  // Activation des lignes successivement
+  for (int j = 0; j < 8; j++){
+    mat_set_row(j, val);
+    wait(100);
+    desactivate_row();
+  }
+}
 }
