@@ -1,19 +1,19 @@
 ENTRY(_start)
 
-MEMORY 
+MEMORY
 	{
 		flash (rx) : ORIGIN = 0x00000800, LENGTH = 254k
 		flash_config (rx) : ORIGIN = 0x00000400, LENGTH = 32
 		raml (!rx) : ORIGIN = 0x1fffe000, LENGTH = 8k
-		ramh (!rx) : ORIGIN = 0x20000000, LENGTH = 24k	
+		ramh (!rx) : ORIGIN = 0x20000000, LENGTH = 24k
 	}
 
 stack_size = 8;
 _stack = ORIGIN(raml)+LENGTH(raml);
 _stack_end = _stack - stack_size;
-   
+
 SECTIONS {
-	 .text : { 
+	 .text : {
 		 *(.text)
 		 _etext = . ;
 	 } > ramh
@@ -30,4 +30,7 @@ SECTIONS {
 	.flash_config :	{
 		   *(.flash_config)
 	} > flash_config
+	.rodata : {
+			 *(.rodata)
+	 } > flash
 }

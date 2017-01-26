@@ -28,7 +28,9 @@ int main() {
 
 	// Initialisation de la vector table
 	irq_init();
-	
+
+	while(1)
+		display_image();
 	return 0;
 
 }
