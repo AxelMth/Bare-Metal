@@ -21,7 +21,7 @@ void button_init(){
 	irq_enable(31);
 }
 
-void PinCD_IRQHandler(){
+void LLWU_IRQHandler(){
 	// Active le Interrupt Status Flag
 	SETONEBIT(PORTC_PCR3,24);
 	led_r_toggle();
