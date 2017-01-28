@@ -1,5 +1,6 @@
 #include "registerManager.h"
 #include "matrix.h"
+#include "globalObjects.h"
 
 extern char _binary_image_raw_start;
 
@@ -57,14 +58,6 @@ static inline void ROW4(int x) {if(!x) {SETONEBIT(GPIOD_PCOR,7);} else {SETONEBI
 static inline void ROW5(int x) {if(!x) {SETONEBIT(GPIOD_PCOR,5);} else {SETONEBIT(GPIOD_PSOR,5);}};
 static inline void ROW6(int x) {if(!x) {SETONEBIT(GPIOA_PCOR,12);} else {SETONEBIT(GPIOA_PSOR,12);}};
 static inline void ROW7(int x) {if(!x) {SETONEBIT(GPIOA_PCOR,4);} else {SETONEBIT(GPIOA_PSOR,4);}};
-
-// Définition de la structure des pixels
-typedef struct {
-  uint8_t r;
-  uint8_t g;
-  uint8_t b;
-} rgb_color;
-
 
 // Désactive toutes les lignes
 static void desactivate_row();
@@ -310,4 +303,13 @@ void display_image(){
     mat_set_row(8-(i+1),val);
   }
 
+}
+
+void display_frame(){
+
+	while(1){
+   		for (int j = 0; j < 8; j++){
+    			mat_set_row(j,frame+8*j);
+		}
+	}
 }

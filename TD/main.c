@@ -6,6 +6,7 @@
 #include "matrix.h"
 #include "irq.h"
 #include "buttons.h"
+#include "globalObjects.h"
 
 // Attente active
 void wait(){
@@ -36,6 +37,16 @@ int main() {
 	// Initialisation des boutons
 	button_init();
 	
-	test_pixels();
+	uart_putchar('s');
+	uart_putchar('e');
+
+	for(int j = 0; j < 64;j++){
+		frame[j].r = 255;
+		frame[j].g = 0;
+		frame[j].b = 0;
+	}
+
+	display_frame();
+	//test_pixels();
 	return 0;
 }

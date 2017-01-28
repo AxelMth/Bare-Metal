@@ -93,6 +93,7 @@ void *vector_table[] __attribute__((section("vector_t"))) = {
 void irq_init(){
    VTOR = (uint32_t) &vector_table;
    enable_irq();
+   irq_enable(12);
 }
 
 void irq_enable(int irq_number){

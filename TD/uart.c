@@ -1,5 +1,6 @@
 #include "registerManager.h"
 #include "uart.h"
+#include "led.h"
 
 // Registre d'activation de l'horloge UART0
 #define SIM_SCGC4 (*(volatile uint32_t *) 0x40048034)
@@ -107,4 +108,12 @@ void uart_gets(char *s, int size){
 	}
 	*(s+i) = '\0';
 
+}
+
+void UART0_IRQHandler(){
+	
+	led_g_toggle();
+	while(1);
+	//unsigned char c = uart_getchar()
+	
 }
