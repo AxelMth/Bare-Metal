@@ -14,6 +14,7 @@ _stack_end = _stack - stack_size;
 
 SECTIONS {
 	 .text : {
+		 *(vector_t)
 		 *(.text)
 		 _etext = . ;
 	 } > ramh

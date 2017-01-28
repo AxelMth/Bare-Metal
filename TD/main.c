@@ -36,5 +36,6 @@ int main() {
 	// Initialisation des boutons
 	button_init();
 	
+	test_pixels();
 	return 0;
 }

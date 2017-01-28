@@ -34,7 +34,7 @@ MAKE_DEFAULT_HANDLER(ISO_IRQHandler);
 MAKE_DEFAULT_HANDLER(PinA_IRQHandler);
 MAKE_DEFAULT_HANDLER(PinCD_IRQHandler);
 
-void *vector_table[] = {
+void *vector_table[] __attribute__((section("vector_t"))) = {
     // Stack and Reset Handler
     &_stack,            /* Top of stack */
     _start,             /* Reset handler */
