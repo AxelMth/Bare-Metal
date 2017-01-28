@@ -5,6 +5,7 @@
 #include "uart.h"
 #include "matrix.h"
 #include "irq.h"
+#include "buttons.h"
 
 // Attente active
 void wait(){
@@ -29,8 +30,11 @@ int main() {
 	// Initialisation de la vector table
 	irq_init();
 
-	while(1)
-		display_image();
+	//while(1)
+	//	display_image();
+	
+	// Initialisation des boutons
+	button_init();
+	
 	return 0;
-
 }

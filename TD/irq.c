@@ -1,5 +1,5 @@
 #include "irq.h"
-#include <stdint.h>
+#include "registerManager.h"
 
 #define MAKE_DEFAULT_HANDLER(truc_IRQHandler) void __attribute__((weak)) truc_IRQHandler() {disable_irq(); while(1);}
 #define NVIC_ISER (*(volatile uint32_t *) 0xE000E100)
@@ -31,7 +31,7 @@ MAKE_DEFAULT_HANDLER(RTC1_IRQHandler);
 MAKE_DEFAULT_HANDLER(RTC2_IRQHandler);
 MAKE_DEFAULT_HANDLER(PIT_IRQHandler);
 MAKE_DEFAULT_HANDLER(ISO_IRQHandler);
-MAKE_DEFAULT_HANDLER(PinAIRQHandler);
+MAKE_DEFAULT_HANDLER(PinA_IRQHandler);
 MAKE_DEFAULT_HANDLER(PinCD_IRQHandler);
 
 void *vector_table[] = {
@@ -86,18 +86,19 @@ void *vector_table[] = {
     0,			/* Reserved */
     0,			/* Reserved */
     0,			/* Reserved */
-    PinAIRQHandler, 	  /* Pin detect (port A) handler */
+    PinA_IRQHandler, 	  /* Pin detect (port A) handler */
     PinCD_IRQHandler,	  /* Pin detect (port C/D) handler */
 };
 
 void irq_init(){
-  VTOR = (uint32_t) vector_table;
+   VTOR = (uint32_t) &vector_table;
+   enable_irq();
 }
 
 void irq_enable(int irq_number){
-  NVIC_ISER |= 1<<irq_number;
+  SETONEBIT(NVIC_ISER,irq_number);
 }
 
 void irq_disable(int irq_number){
-  NVIC_ICER |= 1<<irq_number;
+  SETONEBIT(NVIC_ICER,irq_number);
 }
