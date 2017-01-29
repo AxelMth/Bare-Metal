@@ -1,6 +1,7 @@
 #include "registerManager.h"
 #include "uart.h"
 #include "led.h"
+#include "irq.h"
 
 // Registre d'activation de l'horloge UART0
 #define SIM_SCGC4 (*(volatile uint32_t *) 0x40048034)
@@ -41,10 +42,10 @@ void uart_init(){
 	UART0_C2 = 0;
 
 	// MaJ de l'oversampling maximale avec erreur de moins de 3%
-	UART0_C4 = 0x1D;
+	UART0_C4 = 31;
 
 	// Définition du SBR
-	UART0_BDL = 7;
+	UART0_BDL = 20;
 
 	// SBR + 1 bit de stop
 	UART0_BDH = 0;
@@ -61,8 +62,9 @@ void uart_init(){
 	// Activation des horloges du port A
 	SETONEBIT(SIM_SCGC5,9);
 
-	// Activation de la reception et de l'emission de l'UART0
-	UART0_C2 = 12;
+	// Activation de la reception et de l'emission de l'UART0 + interruption
+	UART0_C2 |= 0x2C;
+	irq_enable(12);
 }
 
 void uart_putchar(char c){
@@ -113,7 +115,13 @@ void uart_gets(char *s, int size){
 void UART0_IRQHandler(){
 	
 	led_g_toggle();
-	while(1);
-	//unsigned char c = uart_getchar()
-	
+	led_r_toggle();
+	UART0_D;
+	/*unsigned char c = uart_getchar()
+	if (c == 0xFF)
+	{
+		current_pixel = 0;
+	} else {}*/
+		
+
 }

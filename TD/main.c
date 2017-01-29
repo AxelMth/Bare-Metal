@@ -31,19 +31,24 @@ int main() {
 	// Initialisation de la vector table
 	irq_init();
 
-	//while(1)
-	//	display_image();
-	
+
 	// Initialisation des boutons
 	button_init();
-	
+
+	//while(1)
+	//	display_image();
+
+	test_pixels();
+
 	uart_putchar('s');
 	uart_putchar('e');
 
-	for(int j = 0; j < 64;j++){
-		frame[j].r = 255;
-		frame[j].g = 0;
-		frame[j].b = 0;
+	for (int i = 0; i < 8; i++){
+		for(int j = 0; j < 8;j++){
+			frame[8*i+j].r = 255 - 16*(8*i+j);
+			frame[8*i+j].g = 0;
+			frame[8*i+j].b = 0;
+		}
 	}
 
 	display_frame();
