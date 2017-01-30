@@ -308,8 +308,17 @@ void display_image(){
 void display_frame(){
 
 	while(1){
-   		for (int j = 0; j < 8; j++){
-    			mat_set_row(j,frame+8*j);
+		for (int i = 0; i < 8; i++){
+			
+			desactivate_row();
+			rgb_color tab[8];
+			
+			for (int j = 7; j >= 0; j--){
+				tab[j].r = frame[8*i+j].r;
+				tab[j].g = frame[8*i+j].g;
+				tab[j].b = frame[8*i+j].b;
+			}
+			mat_set_row(i,tab);
 		}
 	}
 }

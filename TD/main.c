@@ -31,17 +31,13 @@ int main() {
 	// Initialisation de la vector table
 	irq_init();
 
-
 	// Initialisation des boutons
 	button_init();
 
 	//while(1)
 	//	display_image();
 
-	test_pixels();
-
-	uart_putchar('s');
-	uart_putchar('e');
+	//test_pixels();
 
 	for (int i = 0; i < 8; i++){
 		for(int j = 0; j < 8;j++){

@@ -2,6 +2,7 @@
 #include "uart.h"
 #include "led.h"
 #include "irq.h"
+#include "globalObjects.h"
 
 // Registre d'activation de l'horloge UART0
 #define SIM_SCGC4 (*(volatile uint32_t *) 0x40048034)
@@ -114,14 +115,28 @@ void uart_gets(char *s, int size){
 
 void UART0_IRQHandler(){
 	
-	led_g_toggle();
-	led_r_toggle();
-	UART0_D;
-	/*unsigned char c = uart_getchar()
-	if (c == 0xFF)
+	//led_g_toggle();
+	//led_r_toggle();
+	unsigned char c = uart_getchar();
+	if (c == 0xFF || current_pixel >= 64)
 	{
 		current_pixel = 0;
-	} else {}*/
+		current_color = 0;
+	} else {
+		if (current_color == 0){
+			frame[current_pixel].r = c;
+			current_color++;
+		}
+		else if (current_color == 1){
+			frame[current_pixel].g = c;
+			current_color++;
+		}
+		else {
+			frame[current_pixel].b = c;
+			current_color = 0;
+			current_pixel++;
+		}
+	}
 		
 
 }
