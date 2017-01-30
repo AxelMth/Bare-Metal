@@ -7,6 +7,7 @@
 #include "irq.h"
 #include "buttons.h"
 #include "globalObjects.h"
+#include "pit.h"
 
 // Attente active
 void wait(){
@@ -37,10 +38,13 @@ int main() {
 	//while(1)
 	//	display_image();
 
-	//test_pixels();
-
 	// Afichage du fichier binaire
-	display_frame();
+	//display_frame();
+	
+	// Initialisation du compteur
+	pit_init();
 
+	// Tâche de fond
+	test_pixels();
 	return 0;
 }
