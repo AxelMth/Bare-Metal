@@ -205,13 +205,15 @@ static void send_byte(uint8_t val, int bank){
 
 static void mat_set_row(int row, const rgb_color *val) {
 
-  for (int i= 0; i < 8; i++){
-    send_byte(val[8-(i+1)].b,1);
-    send_byte(val[8-(i+1)].g,1);
-    send_byte(val[8-(i+1)].r,1);
+  // Pour chaque pixels de la ligne, on met dans Bank1 la valeur de chaque
+  // pixel.
+  for (int i=7; i>=0; i--){
+    send_byte(val[i].b,1);
+    send_byte(val[i].g,1);
+    send_byte(val[i].r,1);
   }
-
   pulse_LAT();
+  // Une fois les données envoyées, on active la ligne
   activate_row(row);
 }
 
@@ -302,23 +304,17 @@ void display_image(){
     // On affiche la ligne de LEDs (dans le même ordre que la photo du TP)
     mat_set_row(8-(i+1),val);
   }
-
 }
 
 void display_frame(){
-
+  // On raffraîchit l'image en permanence
 	while(1){
+    // Pour chaque ligne
 		for (int i = 0; i < 8; i++){
-			
+      // On désactives les lignes pour n'afficher que la ligne courante
 			desactivate_row();
-			rgb_color tab[8];
-			
-			for (int j = 7; j >= 0; j--){
-				tab[j].r = frame[8*i+j].r;
-				tab[j].g = frame[8*i+j].g;
-				tab[j].b = frame[8*i+j].b;
-			}
-			mat_set_row(i,tab);
+      // Affichage de la ligne avec les valeurs de frame
+			mat_set_row(i,frame+8*i);
 		}
 	}
 }

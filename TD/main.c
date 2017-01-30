@@ -39,15 +39,8 @@ int main() {
 
 	//test_pixels();
 
-	for (int i = 0; i < 8; i++){
-		for(int j = 0; j < 8;j++){
-			frame[8*i+j].r = 255 - 16*(8*i+j);
-			frame[8*i+j].g = 0;
-			frame[8*i+j].b = 0;
-		}
-	}
-
+	// Afichage du fichier binaire
 	display_frame();
-	//test_pixels();
+
 	return 0;
 }

@@ -8,6 +8,5 @@
 
 #define SETONEBIT(reg,shift) (reg |= (1<<shift))
 #define CLEARONEBIT(reg,shift) (reg &= ~(1<<shift))
-#define GETONEBIT(reg,shift) (reg & (1<<shift))
 
 #endif // REGISTER_H

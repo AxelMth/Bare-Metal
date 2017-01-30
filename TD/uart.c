@@ -114,15 +114,25 @@ void uart_gets(char *s, int size){
 }
 
 void UART0_IRQHandler(){
-	
-	//led_g_toggle();
-	//led_r_toggle();
+
+	// On récupère l'octet envoyé
 	unsigned char c = uart_getchar();
+
+	// Test Overrun & Framing Error
+	if (UART0_S1 & 0x0A) {
+		UART0_S1 |= 0x0A;
+		goto end;
+	}
+
+	// Si on est au début ou à la fin de la trame,
+	// On initialise les paramètres
 	if (c == 0xFF || current_pixel >= 64)
 	{
 		current_pixel = 0;
 		current_color = 0;
 	} else {
+		// On regarde ensuite l'ordre de l'envoi des pixels
+		// et on les fait correpondre aux couleurs associées
 		if (current_color == 0){
 			frame[current_pixel].r = c;
 			current_color++;
@@ -132,11 +142,11 @@ void UART0_IRQHandler(){
 			current_color++;
 		}
 		else {
+			// Une fois arrivé au bleu, on passe au pixel suivant
 			frame[current_pixel].b = c;
 			current_color = 0;
 			current_pixel++;
 		}
 	}
-		
-
+end: ;
 }
