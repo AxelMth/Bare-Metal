@@ -2,6 +2,7 @@
 #include "registerManager.h"
 #include "led.h"
 #include "irq.h"
+#include "globalObjects.h"
 
 #define PIT_MCR (*(volatile uint32_t *) 0x40037000)
 #define PIT_LDVAL0 (*(volatile uint32_t *) 0x40037100)
@@ -16,7 +17,7 @@ void pit_init(){
 	// Timers continue to run in Debug mode.
 	PIT_MCR = 0x00;
 	// On rentre la valeur du compteur (1sec)
-	PIT_LDVAL0 = 24000000;
+	PIT_LDVAL0 = 342857;
 	// Activation du timer et des interruptions
 	PIT_TCTRL0 |= (1<<1) | (1<<0);
 	// Activation des interruptions sur le PIT
@@ -26,6 +27,9 @@ void pit_init(){
 void PIT_IRQHandler(){
 	// On clear le flag d'interruption
 	PIT_TFLG0 |= 1;
-	// Clignotement de la LED
-	led_r_toggle();
+	if (!display)
+		display = 1;
+	else 
+		display = 0;
+		
 }

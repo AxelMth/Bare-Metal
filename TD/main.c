@@ -44,7 +44,9 @@ int main() {
 	// Initialisation du compteur
 	pit_init();
 
-	// Tâche de fond
-	test_pixels();
+	while(1){
+		if(display)
+			display_image();
+	}
 	return 0;
 }
