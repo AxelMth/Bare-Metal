@@ -8,6 +8,7 @@
 #include "buttons.h"
 #include "globalObjects.h"
 #include "pit.h"
+#include "init_clocks.h"
 
 // Attente active
 void wait(){
@@ -39,14 +40,19 @@ int main() {
 	//	display_image();
 
 	// Afichage du fichier binaire
-	//display_frame();
-	
+
+
 	// Initialisation du compteur
 	pit_init();
 
-	while(1){
+	/*while(1){
 		if(display)
 			display_image();
-	}
+	}*/
+
+	// Initialisation des horloges
+	init_clocks();
+	display_frame();
+	
 	return 0;
 }
