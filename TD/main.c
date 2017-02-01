@@ -43,16 +43,17 @@ int main() {
 	// Initialisation du compteur
 	pit_init();
 
-	/*while(1){
-		if(display)
-			display_image();
-	}*/
+	while(1){
+		//display_image();
+		//test_pixels();
+		display_frame();
+	}
 
 	// Initialisation des horloges
 	init_clocks();
 	
 	// Affichage du binaire
-	display_frame();
+	//display_frame();
 	
 	return 0;
 }

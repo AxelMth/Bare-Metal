@@ -307,14 +307,15 @@ void display_image(){
 }
 
 void display_frame(){
-  // On raffraîchit l'image en permanence
-	while(1){
-    // Pour chaque ligne
-		for (int i = 0; i < 8; i++){
-      // On désactives les lignes pour n'afficher que la ligne courante
-			desactivate_row();
-      // Affichage de la ligne avec les valeurs de frame
-			mat_set_row(i,frame+8*i);
-		}
+	// On rafraîchit l'image en permanence
+   	// Pour chaque ligne
+	for (int i = 0; i < 8; i++){
+		// On attend que display soit à 1 (ie on attend PIT_LDVAL0 cycles puis on le remet à0
+		while(!display);
+		display = 0;
+      		// On désactive les lignes pour n'afficher que la ligne courante
+		desactivate_row();
+      		// Affichage de la ligne avec les valeurs de frame
+		mat_set_row(i,frame+8*i);
 	}
 }

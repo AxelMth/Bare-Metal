@@ -16,8 +16,8 @@ void pit_init(){
 	// Clock for standard PIT timers is enabled.
 	// Timers continue to run in Debug mode.
 	PIT_MCR = 0x00;
-	// On rentre la valeur du compteur (1sec)
-	PIT_LDVAL0 = 342857;
+	// On rentre la valeur du compteur (ici on rafraîchit 70 fois par secondes pour chaque ligne , il faut donc que l'on rafraîchisse 8 fois plus vite)
+	PIT_LDVAL0 = 24000000/(70*8);
 	// Activation du timer et des interruptions
 	PIT_TCTRL0 |= (1<<1) | (1<<0);
 	// Activation des interruptions sur le PIT
@@ -27,9 +27,7 @@ void pit_init(){
 void PIT_IRQHandler(){
 	// On clear le flag d'interruption
 	PIT_TFLG0 |= 1;
-	if (!display)
-		display = 1;
-	else 
-		display = 0;
-		
+	// On rafraîchit l'image après l'attente définit plus haut
+	display = 1;
+
 }
