@@ -13,8 +13,8 @@
 
 void init_clocks(){
 
-  // Desactivation du COP Watchdog Timeout
-  SIM_COPC = SIM_COPC & (0 << 2) & (0 << 3);
+  	// Desactivation du COP Watchdog Timeout
+  	SIM_COPC &= (0 << 2) & (0 << 3);
 
 	// Selects the range of frequency for quartz oscillator
 	MCG_C2 = 0x2C;
@@ -45,7 +45,7 @@ void init_clocks(){
 	}
 	// Now in FBE
 	// Configures MCG_C5 to set the PLL reference clock at the right frequency
-	MCG_C5 |= 0x02;
+	MCG_C5 = 3;
 
 	// Selects the pll sets the PLL multiplier
 	MCG_C6 = (1<<6);
