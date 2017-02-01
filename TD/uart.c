@@ -55,13 +55,13 @@ void uart_init(){
 
 	// Pas de parité
 	UART0_C1 = 0x12;
+	
+	// Activation des horloges du port A
+	SETONEBIT(SIM_SCGC5,9);
 
 	// Activation du port A en mode UART
 	PORTA_PCR1 = 0x2 << 8;
 	PORTA_PCR2 = 0x2 << 8;
-
-	// Activation des horloges du port A
-	SETONEBIT(SIM_SCGC5,9);
 
 	// Activation de la reception et de l'emission de l'UART0 + interruption
 	UART0_C2 |= 0x2C;

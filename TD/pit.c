@@ -18,6 +18,8 @@ void pit_init(){
 	PIT_MCR = 0x00;
 	// On rentre la valeur du compteur (ici on rafraîchit 70 fois par secondes pour chaque ligne , il faut donc que l'on rafraîchisse 8 fois plus vite)
 	PIT_LDVAL0 = 24000000/(70*8);
+	// Test clignotement led
+	//PIT_LDVAL0 = 24000000;
 	// Activation du timer et des interruptions
 	PIT_TCTRL0 |= (1<<1) | (1<<0);
 	// Activation des interruptions sur le PIT
@@ -29,5 +31,7 @@ void PIT_IRQHandler(){
 	PIT_TFLG0 |= 1;
 	// On rafraîchit l'image après l'attente définit plus haut
 	display = 1;
-
+	
+	// Test led
+	//led_r_toggle();
 }

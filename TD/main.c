@@ -19,7 +19,10 @@ void wait(){
 int main() {
 
 	// Initialisation des horloges
-	clocks_init();
+	init_clocks();
+	
+	// Initialisation de la vector table
+	irq_init();
 
 	// Initialisation uart
 	uart_init();
@@ -30,12 +33,9 @@ int main() {
 	// Initialisation de la matrice de LEDs
 	matrix_init();
 
-	// Initialisation de la vector table
-	irq_init();
-
 	// Initialisation des boutons
 	button_init();
-	
+
 	// Affichage de image.raw
 	//while(1)
 	//	display_image();
@@ -44,16 +44,8 @@ int main() {
 	pit_init();
 
 	while(1){
-		//display_image();
-		//test_pixels();
 		display_frame();
 	}
 
-	// Initialisation des horloges
-	init_clocks();
-	
-	// Affichage du binaire
-	//display_frame();
-	
 	return 0;
 }
