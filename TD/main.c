@@ -35,12 +35,10 @@ int main() {
 
 	// Initialisation des boutons
 	button_init();
-
+	
+	// Affichage de image.raw
 	//while(1)
 	//	display_image();
-
-	// Afichage du fichier binaire
-
 
 	// Initialisation du compteur
 	pit_init();
@@ -52,6 +50,8 @@ int main() {
 
 	// Initialisation des horloges
 	init_clocks();
+	
+	// Affichage du binaire
 	display_frame();
 	
 	return 0;
