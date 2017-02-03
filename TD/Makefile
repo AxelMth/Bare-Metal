@@ -8,12 +8,16 @@ SOURCES = uart.c init.c main.c led.c irq.c buttons.c matrix.c pit.c init_clocks.
 OBJETS = main.o crt0.o init.o led.o uart.o matrix.o image.o irq.o flash.o buttons.o pit.o init_clocks.o
 CLOCKS = clocks.o 
 SOURCES = main.c led.c matrix.c
-EXE = main
+EXE = bootloader
+BIN = $(EXE).bin
 LFLAGS = -nostdlib -T
 LSCRIPT = ld_ram.lds
 GDB = arm-none-eabi-gdb
 
-all: $(EXE)
+all: $(BIN)
+
+$(BIN) : $(EXE)
+	$(PREFIX)-objcopy -I binary -O elf32-little -B arm $^ $@
 
 image.o: image.raw
 	$(PREFIX)-objcopy -I binary -O elf32-littlearm -B arm $^ $@
@@ -30,4 +34,4 @@ startgdbserver:
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -MM -MF $@ -MP $<
 
 clean:
-	rm -f $(EXE) $(OBJETS) *.d
+	rm -f $(EXE) $(OBJETS) *.d $(BIN)

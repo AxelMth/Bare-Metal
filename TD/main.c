@@ -37,15 +37,15 @@ int main() {
 	button_init();
 
 	// Affichage de image.raw
-	//while(1)
-	//	display_image();
+	while(1)
+		display_image();
 
 	// Initialisation du compteur
 	pit_init();
 
-	while(1){
+	/*while(1){
 		display_frame();
-	}
+	}*/
 
 	return 0;
 }
