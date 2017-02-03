@@ -36,9 +36,7 @@ SECTIONS {
 		 _data = . ;
 		 *(.data)
 		 _edata = . ;
-		 . += SIZEOF(.text);
-		 _ecopy = .;
-	 } > ramh
+	 } > flash 
 
 	.bss : {
 		 _bstart = . ;

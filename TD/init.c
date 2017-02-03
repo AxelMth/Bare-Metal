@@ -5,12 +5,12 @@ extern char _etext, _btext, _data,
 
 // ROM has placed .data at end of .text.
 // Copy .data to RAM
-void copy_rom_ram(){
+/*void copy_rom_ram(){
 	char *dst = &_edata;
 	char *src = &_btext;
 	while (dst < &_ecopy && src < &_etext)
 		*dst++ = *src++;
-}
+}*/
 
 //Initialisation du bss
 void init_bss(){

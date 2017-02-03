@@ -287,7 +287,7 @@ void display_image(){
 
     // On laisse la ligne précédente allumée pour avoir une meilleure intensité
     // sans que l'oeil ne percoive le rafraichissement des lignes
-    wait(3);
+    wait(1);
 
     // On rafraichit les lignes définies par le mat_set_row de l'itération précédente
     desactivate_row();
