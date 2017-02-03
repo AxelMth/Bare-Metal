@@ -27,17 +27,23 @@ SECTIONS {
 		 *(.text)
 		 _etext = .;
 	 } > flash
-
-	.rodata : {
-		 *(.rodata)
-	 } > flash
-
-	.data : {
+	
+	 .data : {
 		 _data = . ;
 		 *(.data)
 		 _edata = . ;
 	 } > flash 
 
+	 .rodata : {
+		 *(.rodata)
+	 } > flash
+
+	.text_ram : {
+		_btext_ram = .;
+		. += SIZEOF(.text)+SIZEOF(.data); 
+		_etext_ram = .;
+	} > ramh
+	
 	.bss : {
 		 _bstart = . ;
 		 *(.bss) *(COMMON)

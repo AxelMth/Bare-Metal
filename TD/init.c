@@ -1,16 +1,14 @@
-#include <stdint.h>
-
 extern char _etext, _btext, _data,
- _edata, _bstart, _bend, _ecopy;
+ _edata, _bstart, _bend, _btext_ram, _etext_ram;
 
 // ROM has placed .data at end of .text.
 // Copy .data to RAM
-/*void copy_rom_ram(){
-	char *dst = &_edata;
+void copy_rom_ram(){
+	char *dst = &_btext_ram;
 	char *src = &_btext;
-	while (dst < &_ecopy && src < &_etext)
+	while (dst < &_etext_ram && src < &_data)
 		*dst++ = *src++;
-}*/
+}
 
 //Initialisation du bss
 void init_bss(){
