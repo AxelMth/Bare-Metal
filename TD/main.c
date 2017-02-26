@@ -36,12 +36,12 @@ int main() {
 	// Initialisation des boutons
 	button_init();
 
+	// Initialisation du compteur
+	pit_init();
+
 	// Affichage de image.raw
 	while(1)
 		display_image();
-
-	// Initialisation du compteur
-	pit_init();
 
 	/*while(1){
 		display_frame();

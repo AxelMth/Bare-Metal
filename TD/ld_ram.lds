@@ -38,7 +38,7 @@ SECTIONS {
 		 *(.rodata)
 	 } > flash
 
-	.text_ram : {
+	.text_ram : AT(ADDR(.text)) {
 		_btext_ram = .;
 		. += SIZEOF(.text)+SIZEOF(.data); 
 		_etext_ram = .;
